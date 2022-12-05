@@ -5,6 +5,9 @@
 
 #include "TankPawn.h"
 
+ATankPlayerController::ATankPlayerController() {
+
+}
 
 void ATankPlayerController::SetupInputComponent()
 {

@@ -6,6 +6,7 @@
 #include "GameFramework/PlayerController.h"
 #include "TankPlayerController.generated.h"
 
+class ATankPawn;
 /**
  * 
  */
@@ -17,6 +18,7 @@ public:
 	UPROPERTY()
 		class ATankPawn* TankPawn;
 
+	ATankPlayerController();
 	virtual void SetupInputComponent() override;
 
 protected:

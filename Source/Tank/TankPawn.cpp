@@ -53,11 +53,11 @@ void ATankPawn::Tick(float DeltaTime)
 }
 
 // Called to bind functionality to input
-/*void ATankPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+void ATankPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
-}*/
+}
 
 void ATankPawn::MoveForward(float Value) {
 	targetForwardAxisValue = Value;
