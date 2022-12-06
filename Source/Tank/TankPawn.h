@@ -19,6 +19,7 @@ public:
 
 	void MoveForward(float Value);
 	void MoveRight(float Value);
+	void MoveFunction(float* DeltaTime);
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 

@@ -44,17 +44,27 @@ void ATankPawn::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	//GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Red, FString::Printf(TEXT("Hello")));
+	MoveFunction(&DeltaTime);
+}
+
+
+/*
+Выносим в отдельную функцию
+*/
+void ATankPawn::MoveFunction(float *DeltaTime) {
 	FVector CurrentPosition = GetActorLocation();
 	FVector ForwardVector = GetActorForwardVector();
 	FVector RightVector = GetActorRightVector();
-	FVector movePosition = CurrentPosition + ForwardVector * MoveSpeed * targetForwardAxisValue * DeltaTime;
-//	GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Red, FString::Printf(TEXT("movePosition: %s, CurrentPosition: %s, ForwardVector %s, MoveSpeed %f, targetForwardAxisValue %f ")
-//		, *movePosition.ToString(), *ForwardVector.ToString(), *CurrentPosition.ToString(), MoveSpeed, targetForwardAxisValue));
+	FVector movePosition = CurrentPosition + ForwardVector * MoveSpeed * targetForwardAxisValue * *DeltaTime;
+	//	GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Red, FString::Printf(TEXT("movePosition: %s, CurrentPosition: %s, ForwardVector %s, MoveSpeed %f, targetForwardAxisValue %f ")
+	//		, *movePosition.ToString(), *ForwardVector.ToString(), *CurrentPosition.ToString(), MoveSpeed, targetForwardAxisValue));
 	SetActorLocation(movePosition, true);
 	CurrentPosition = GetActorLocation();
-	 movePosition = CurrentPosition + RightVector * MoveSpeed * targetRigthAxisValue * DeltaTime;
-	 SetActorLocation(movePosition, true);
+	movePosition = CurrentPosition + RightVector * RotationSpeed * targetRigthAxisValue * *DeltaTime;
+	SetActorLocation(movePosition, true);
+
 }
+
 
 // Called to bind functionality to input
 void ATankPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
