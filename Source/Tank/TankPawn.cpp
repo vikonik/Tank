@@ -46,10 +46,14 @@ void ATankPawn::Tick(float DeltaTime)
 	//GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Red, FString::Printf(TEXT("Hello")));
 	FVector CurrentPosition = GetActorLocation();
 	FVector ForwardVector = GetActorForwardVector();
+	FVector RightVector = GetActorRightVector();
 	FVector movePosition = CurrentPosition + ForwardVector * MoveSpeed * targetForwardAxisValue * DeltaTime;
 //	GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Red, FString::Printf(TEXT("movePosition: %s, CurrentPosition: %s, ForwardVector %s, MoveSpeed %f, targetForwardAxisValue %f ")
 //		, *movePosition.ToString(), *ForwardVector.ToString(), *CurrentPosition.ToString(), MoveSpeed, targetForwardAxisValue));
 	SetActorLocation(movePosition, true);
+	CurrentPosition = GetActorLocation();
+	 movePosition = CurrentPosition + RightVector * MoveSpeed * targetRigthAxisValue * DeltaTime;
+	 SetActorLocation(movePosition, true);
 }
 
 // Called to bind functionality to input
@@ -63,4 +67,8 @@ void ATankPawn::MoveForward(float Value) {
 	targetForwardAxisValue = Value;
 //	GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Red, FString::Printf(TEXT("MoveForward.. %s"), *GetActorLocation().ToString()));
 //	GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Red, FString::Printf(TEXT("MoveForward.. %f"), Value));
+}
+
+void ATankPawn::MoveRight(float Value) {
+	targetRigthAxisValue = Value;
 }
