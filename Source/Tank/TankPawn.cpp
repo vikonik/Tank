@@ -10,10 +10,7 @@
 #include "TankPlayerController.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Cannon.h"
-
-
-
-
+#include "Components/ArrowComponent.h"
 
 //DECLARE_LOG_CATEGORY_EXTERN(TankLog, All, All);
 //DEFINE_LOG_CATEGORY(TankLog);
@@ -33,8 +30,8 @@ ATankPawn::ATankPawn()
 	TurretMesh->SetupAttachment(BodyMesh);
 											  
 	CannonSetupPoint = CreateDefaultSubobject<UArrowComponent>(TEXT("CannonSetupPoint"));
-	CannonSetupPoint->AttachToComponent(TurretMesh);
-//	CannonSetupPoint->AttachToComponent(TurretMesh, FAttachmentTransformRules::KeepRelativeTransform);
+//	CannonSetupPoint->AttachToComponent(TurretMesh);
+	CannonSetupPoint->AttachToComponent(TurretMesh, FAttachmentTransformRules::KeepRelativeTransform);
 
 
 	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
@@ -107,11 +104,11 @@ void ATankPawn::MoveFunction(float *DeltaTime) {
 }
 
 // Called to bind functionality to input
-void ATankPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
-{
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
-}
+//void ATankPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+//{
+//	Super::SetupPlayerInputComponent(PlayerInputComponent);
+//
+//}
 
 void ATankPawn::MoveForward(float Value) {
 	targetForwardAxisValue = Value;
@@ -139,7 +136,8 @@ void ATankPawn::SetupCannon()
 	params.Instigator = this;
 	params.Owner = this;
 	Cannon = GetWorld()->SpawnActor<ACannon>(CannonClass, params);
-//	Cannon->AttachToComponent(CannonSetupPoint, FAttachmentTransformRules::SnapToTargetNotIncludingScale);
+	Cannon->AttachToComponent(CannonSetupPoint, FAttachmentTransformRules::SnapToTargetNotIncludingScale);
+	//CannonSetupPoint->AttachToComponent(TurretMesh, FAttachmentTransformRules::KeepRelativeTransform);
 }
 
 void ATankPawn::Fire()
@@ -148,4 +146,11 @@ void ATankPawn::Fire()
 	{
 		Cannon->Fire();
 	}
+}
+
+void ATankPawn::FireSpecial()
+{
+	if (Cannon)
+		Cannon->FireSpecial();
+	
 }

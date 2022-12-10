@@ -17,7 +17,7 @@ void ATankPlayerController::SetupInputComponent()
 	InputComponent->BindAxis("MoveRight", this, &ATankPlayerController::MoveRight);
 	InputComponent->BindAxis("RotateRight", this, &ATankPlayerController::RotateRight);
 	InputComponent->BindAction("Fire", IE_Pressed, this, &ATankPlayerController::Fire);
-
+	InputComponent->BindAction("FireSpecial", EInputEvent::IE_Pressed, this, &ATankPlayerController::FireSpecial);
 
 
 }
@@ -31,14 +31,14 @@ void ATankPlayerController::BeginPlay() {
 void ATankPlayerController::MoveForward(float Value) {
 	if (TankPawn) {
 		TankPawn->MoveForward(Value);
-		GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Red, FString::Printf(TEXT("ATankPlayerController MoveForward.. %f"), Value));
+		//GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Red, FString::Printf(TEXT("ATankPlayerController MoveForward.. %f"), Value));
 	}
 }
 
 void ATankPlayerController::MoveRight(float Value) {
 	if (TankPawn) {
 		TankPawn->MoveRight(Value);
-		GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Red, FString::Printf(TEXT("ATankPlayerController MoveRight.. %f"), Value));
+		//GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Red, FString::Printf(TEXT("ATankPlayerController MoveRight.. %f"), Value));
 	}
 }
 
@@ -59,7 +59,17 @@ void ATankPlayerController::Tick(float DeltaTime)
 	DrawDebugLine(GetWorld(), pawnPos, MousePos, FColor::Green, false, 0.1f, 0, 5);
 }
 
+
 void ATankPlayerController::Fire()
 {
-	TankPawn->Fire();
+	if (TankPawn)
+		TankPawn->Fire();
+	//GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Red, FString::Printf(TEXT("Fire")));
+}
+
+void ATankPlayerController::FireSpecial()
+{
+	if (TankPawn)
+		TankPawn->FireSpecial();
+
 }

@@ -23,25 +23,69 @@ ACannon::ACannon()
 /**/
 void ACannon::Fire()
 {
-	if (!ReadyToFire)
+	if (!IsReadyToFire() )
 	{
+		//Вынесем это в IsReadyToFire()
+		//if (Bullet <= 0) {
+		//	if (!rechargeBegin) {//Если при нажатии не проверять на повторный выстркл, таймер перезапускается зпнова
+		//		GEngine->AddOnScreenDebugMessage(18, 1, FColor::Green, "Recharge? plese wait...");
+		//		GetWorld()->GetTimerManager().SetTimer(ReloadTimer, this, &ACannon::Recharge, 5, false);			
+		//	}
+		//	else {
+		//		GEngine->AddOnScreenDebugMessage(18, 1, FColor::Green, "not ready yet...");
+		//	}
+		//	rechargeBegin = true;
+		//}
+
 		return;
 	} 
 	ReadyToFire = false;
+	Bullet--;
+
 	if (Type == ECannonType::FireProjectile)
 	{
-		GEngine->AddOnScreenDebugMessage(10, 1, FColor::Green, "Fire - projectile");
+		GEngine->AddOnScreenDebugMessage(2, 1, FColor::Green, "Fire - projectile");
+		GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, FString::Printf(TEXT("Bullet is: %d"), Bullet));
 	} 
 	else
 	{
-		GEngine->AddOnScreenDebugMessage(10, 1,FColor::Green, "Fire - trace");
+		GEngine->AddOnScreenDebugMessage(3, 1,FColor::Green, "Fire - trace");
+		GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, FString::Printf(TEXT("Bullet is: %d"), Bullet));
 	}
 
-	GetWorld()->GetTimerManager().SetTimer(ReloadTimerHandle, this, &ACannon::Reload, 1 / FireRate, false);
+	GetWorld()->GetTimerManager().SetTimer(ReloadTimer, this, &ACannon::Reload, 1 / FireRate, false);//FireRate - Время перезарядки
 } 
+
+
+/*
+Будем стрелять очередью
+*/
+void ACannon::FireSpecial()
+{
+	if (!IsReadyToFire() || Bullet <= 0)
+	{
+		return;
+	}
+
+	ReadyToFire = false;
+	GetWorld()->GetTimerManager().SetTimer(BurstTimer, this, &ACannon::BurstFire, BurstInterval, true, 0.0f);
+}
 
 bool ACannon::IsReadyToFire()
 {
+	if (Bullet <= 0) {
+		if (!rechargeBegin) {//Если при нажатии не проверять на повторный выстркл, таймер перезапускается зпнова
+			GEngine->AddOnScreenDebugMessage(18, 1, FColor::Green, "Recharge? plese wait...");
+			GetWorld()->GetTimerManager().SetTimer(ReloadTimer, this, &ACannon::Recharge, 5, false);
+		}
+		else {
+			GEngine->AddOnScreenDebugMessage(18, 1, FColor::Green, "not ready yet...");
+		}
+		rechargeBegin = true;
+
+		return false;
+	}
+
 	return ReadyToFire;
 }
 
@@ -55,15 +99,31 @@ void ACannon::BeginPlay()
 	Super::BeginPlay();
 	Reload();
 }
-
-
-
-
-
 // Called every frame
 void ACannon::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }
 
+
+void ACannon::BurstFire()
+{
+	if (CurrentBurts == BurstSize)
+	{
+		Bullet--;
+		GetWorld()->GetTimerManager().ClearTimer(BurstTimer);
+		ReadyToFire = true;
+		CurrentBurts = 0;
+		GEngine->AddOnScreenDebugMessage(5, 2, FColor::Green, "BurstFire");
+		GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, FString::Printf(TEXT("Bullet is: %d"), Bullet));
+		return;
+	}
+	GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Green, "Pif-paff");//Столько раз стрельнули
+	CurrentBurts++;
+}
+
+void ACannon::Recharge() {
+	rechargeBegin = false;
+	Bullet = 10;
+	GEngine->AddOnScreenDebugMessage(10, 1, FColor::Green, "Recharge ready");
+}

@@ -18,9 +18,16 @@ class TANK_API ACannon : public AActor
 public:	
 	// Sets default values for this actor's properties
 	ACannon();
+	virtual void Tick(float DeltaTime) override;
+//private?
 	void Fire();
 	bool IsReadyToFire();
 	void Reload();
+	void FireSpecial();
+	void BurstFire();
+	void Recharge();
+	FTimerHandle ReloadTimer;
+	FTimerHandle BurstTimer;
 
 protected:
 	// Called when the game starts or when spawned
@@ -43,12 +50,19 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Fire params")
 		ECannonType Type = ECannonType::FireProjectile;
 
-	FTimerHandle ReloadTimerHandle;
-	bool ReadyToFire = true;
 
 
-public:	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ammo")
+		int32 Bullet = 10;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ammo")
+		int32 BurstSize = 5;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ammo")
+		float BurstInterval = 0.1f;
+private:	
 	// Called every frame
-	virtual void Tick(float DeltaTime) override;
-
+	bool ReadyToFire = true;
+	bool rechargeBegin = false;
+	int32 CurrentBurts = 0;
 };

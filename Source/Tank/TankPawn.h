@@ -5,8 +5,10 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
 #include "GameStructs.h"
-#include "Engine/Engine.h"
+//#include "Engine/Engine.h"
+#include "Components/ArrowComponent.h"
 #include "TankPawn.generated.h"
+
 
 
 class UStaticMeshComponent;
@@ -30,9 +32,11 @@ public:
 	void MoveFunction(float* DeltaTime);
 	void RotateRight(float Value);
 	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-	UFUNCTION()
+//	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	//UFUNCTION()
 		void Fire();
+	void FireSpecial();
+
 
 protected:
 	// Called when the game starts or when spawned
