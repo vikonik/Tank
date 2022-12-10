@@ -1,14 +1,18 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
-
+#include "Cannon.h"
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
+#include "GameStructs.h"
 #include "TankPawn.generated.h"
 
 class UStaticMeshComponent;
 class USkeletalMeshComponent;
 class ATankPlayerController;
+class ACannon;
+//class UArrowComponent;
+
 UCLASS()
 class TANK_API ATankPawn : public APawn
 {
@@ -25,10 +29,14 @@ public:
 	void RotateRight(float Value);
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	UFUNCTION()
+		void Fire();
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+	void SetupCannon();
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Components")
 		USkeletalMeshComponent* BodyMesh;
 
@@ -41,7 +49,7 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Components")
 		class USpringArmComponent* SpringArm;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Components")
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
 		class UCameraComponent* Camera;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
@@ -57,6 +65,16 @@ protected:
 	//	float InterpolationKey = 0.1f;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Turret|Speed")
 		float TurretRotationInterpolationKey = 0.5f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Cannon")
+		class UArrowComponent* CannonSetupPoint;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Turret|Cannon")
+		TSubclassOf<ACannon>CannonClass;
+
+	UPROPERTY()
+		ACannon* Cannon;
+
 
 
 	float targetForwardAxisValue = 0.0f;

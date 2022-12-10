@@ -2,13 +2,18 @@
 
 
 #include "TankPawn.h"
-#include "Components/StaticMeshComponent.h"
-#include "Components/SkeletalMeshComponent.h"
 #include "Components/BoxComponent.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "Components/StaticMeshComponent.h"
+#include "Components/SkeletalMeshComponent.h"
 #include "Camera/CameraComponent.h"
 #include "TankPlayerController.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "Cannon.h"
+
+
+
+
 
 //DECLARE_LOG_CATEGORY_EXTERN(TankLog, All, All);
 //DEFINE_LOG_CATEGORY(TankLog);
@@ -26,6 +31,11 @@ ATankPawn::ATankPawn()
 
 	TurretMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("TurretMesh"));
 	TurretMesh->SetupAttachment(BodyMesh);
+											  
+	CannonSetupPoint = CreateDefaultSubobject<UArrowComponent>(TEXT("CannonSetupPoint"));
+//	CannonSetupPoint->AttachToComponent(TurretMesh);
+//	CannonSetupPoint->AttachToComponent(TurretMesh, FAttachmentTransformRules::KeepRelativeTransform);
+
 
 	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
 	SpringArm->SetupAttachment(BoxCollision);
@@ -45,6 +55,8 @@ void ATankPawn::BeginPlay()
 	Super::BeginPlay();
 	//Для башни
 	TankController = Cast<ATankPlayerController>(GetController());
+	SetupCannon();
+
 }
 
 // Called every frame
@@ -114,4 +126,26 @@ void ATankPawn::MoveRight(float Value) {
 void ATankPawn::RotateRight(float Value)
 {
 	targetRotateRigthAxisValue = Value;
+}
+
+void ATankPawn::SetupCannon()
+{
+	if (Cannon)
+	{
+		Cannon->Destroy();
+	} 
+	
+	FActorSpawnParameters params;
+	params.Instigator = this;
+	params.Owner = this;
+	Cannon = GetWorld()->SpawnActor<ACannon>(CannonClass, params);
+//	Cannon->AttachToComponent(CannonSetupPoint, FAttachmentTransformRules::SnapToTargetNotIncludingScale);
+}
+
+void ATankPawn::Fire()
+{
+	if (Cannon)
+	{
+		Cannon->Fire();
+	}
 }

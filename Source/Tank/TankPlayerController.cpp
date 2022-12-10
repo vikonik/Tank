@@ -16,6 +16,10 @@ void ATankPlayerController::SetupInputComponent()
 	InputComponent->BindAxis("MoveForward", this, &ATankPlayerController::MoveForward);
 	InputComponent->BindAxis("MoveRight", this, &ATankPlayerController::MoveRight);
 	InputComponent->BindAxis("RotateRight", this, &ATankPlayerController::RotateRight);
+	InputComponent->BindAction("Fire", IE_Pressed, this, &ATankPlayerController::Fire);
+
+
+
 }
 
 void ATankPlayerController::BeginPlay() {
@@ -53,4 +57,9 @@ void ATankPlayerController::Tick(float DeltaTime)
 	dir.Normalize();
 	MousePos = pawnPos + dir * 1000;
 	DrawDebugLine(GetWorld(), pawnPos, MousePos, FColor::Green, false, 0.1f, 0, 5);
+}
+
+void ATankPlayerController::Fire()
+{
+	TankPawn->Fire();
 }
