@@ -7,6 +7,8 @@
 #include "TankPawn.generated.h"
 
 class UStaticMeshComponent;
+class USkeletalMeshComponent;
+
 UCLASS()
 class TANK_API ATankPawn : public APawn
 {
@@ -27,7 +29,7 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Components")
-		UStaticMeshComponent* BodyMesh;
+		USkeletalMeshComponent* BodyMesh;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Components")
 		UStaticMeshComponent* TurretMesh;

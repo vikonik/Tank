@@ -3,6 +3,7 @@
 
 #include "TankPawn.h"
 #include "Components/StaticMeshComponent.h"
+#include "Components/SkeletalMeshComponent.h"
 #include "Components/BoxComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
@@ -13,8 +14,8 @@ ATankPawn::ATankPawn()
 	PrimaryActorTick.bCanEverTick = true;
 	BoxCollision = CreateDefaultSubobject<UBoxComponent>(TEXT("RootComponent"));
 	RootComponent = BoxCollision;
-
-	BodyMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("BodyMesh"));
+									  
+	BodyMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("BodyMesh"));
 	BodyMesh->SetupAttachment(BoxCollision);
 
 	TurretMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("TurretMesh"));
