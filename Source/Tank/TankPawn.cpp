@@ -7,6 +7,10 @@
 #include "Components/BoxComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
+
+DECLARE_LOG_CATEGORY_EXTERN(TankLog, All, All);
+DEFINE_LOG_CATEGORY(TankLog);
+
 // Sets default values
 ATankPawn::ATankPawn()
 {
@@ -47,9 +51,12 @@ void ATankPawn::Tick(float DeltaTime)
 	//GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Red, FString::Printf(TEXT("Hello")));
 	MoveFunction(&DeltaTime);
 
+	CurrentRightAxisValue = FMath::Lerp(CurrentRightAxisValue, targetRotateRigthAxisValue, InterpolationKey);
+	UE_LOG(LogTemp, Warning, TEXT("CurrentRightAxisValue = %f targetRotateRigthAxisValue = % f"), CurrentRightAxisValue, targetRotateRigthAxisValue);
+
 	float yawRotation = RotationSpeed * targetRotateRigthAxisValue * DeltaTime;
 FRotator currentRotation = GetActorRotation();
-yawRotation = currentRotation.Yaw + yawRotation;
+yawRotation = currentRotation.Yaw + yawRotation;	
 FRotator newRotation = FRotator(0, yawRotation, 0);
 SetActorRotation(newRotation);
 }

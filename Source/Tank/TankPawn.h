@@ -49,10 +49,13 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
 		float RotationSpeed = 100.0f;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Movement|Speed")
+		float InterpolationKey = 0.1f;
 
 	float targetForwardAxisValue = 0.0f;
 	float targetRigthAxisValue = 0.0f;
 	float targetRotateRigthAxisValue = 0.0f;
+	float CurrentRightAxisValue;
 public:	
 	// Called every frame
 //	virtual void Tick(float DeltaTime) override;
