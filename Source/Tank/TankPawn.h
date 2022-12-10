@@ -5,13 +5,15 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
 #include "GameStructs.h"
+#include "Engine/Engine.h"
 #include "TankPawn.generated.h"
+
 
 class UStaticMeshComponent;
 class USkeletalMeshComponent;
 class ATankPlayerController;
 class ACannon;
-//class UArrowComponent;
+class UArrowComponent;
 
 UCLASS()
 class TANK_API ATankPawn : public APawn
@@ -67,7 +69,7 @@ protected:
 		float TurretRotationInterpolationKey = 0.5f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Cannon")
-		class UArrowComponent* CannonSetupPoint;
+		UArrowComponent* CannonSetupPoint;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Turret|Cannon")
 		TSubclassOf<ACannon>CannonClass;

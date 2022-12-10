@@ -33,7 +33,7 @@ ATankPawn::ATankPawn()
 	TurretMesh->SetupAttachment(BodyMesh);
 											  
 	CannonSetupPoint = CreateDefaultSubobject<UArrowComponent>(TEXT("CannonSetupPoint"));
-//	CannonSetupPoint->AttachToComponent(TurretMesh);
+	CannonSetupPoint->AttachToComponent(TurretMesh);
 //	CannonSetupPoint->AttachToComponent(TurretMesh, FAttachmentTransformRules::KeepRelativeTransform);
 
 
