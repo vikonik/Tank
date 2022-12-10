@@ -46,6 +46,12 @@ void ATankPawn::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 	//GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Red, FString::Printf(TEXT("Hello")));
 	MoveFunction(&DeltaTime);
+
+	float yawRotation = RotationSpeed * targetRotateRigthAxisValue * DeltaTime;
+FRotator currentRotation = GetActorRotation();
+yawRotation = currentRotation.Yaw + yawRotation;
+FRotator newRotation = FRotator(0, yawRotation, 0);
+SetActorRotation(newRotation);
 }
 
 
@@ -66,7 +72,6 @@ void ATankPawn::MoveFunction(float *DeltaTime) {
 
 }
 
-
 // Called to bind functionality to input
 void ATankPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
@@ -82,4 +87,9 @@ void ATankPawn::MoveForward(float Value) {
 
 void ATankPawn::MoveRight(float Value) {
 	targetRigthAxisValue = Value;
+}
+
+void ATankPawn::RotateRight(float Value)
+{
+	targetRotateRigthAxisValue = Value;
 }

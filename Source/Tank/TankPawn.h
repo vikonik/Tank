@@ -22,6 +22,7 @@ public:
 	void MoveForward(float Value);
 	void MoveRight(float Value);
 	void MoveFunction(float* DeltaTime);
+	void RotateRight(float Value);
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
@@ -51,6 +52,7 @@ protected:
 
 	float targetForwardAxisValue = 0.0f;
 	float targetRigthAxisValue = 0.0f;
+	float targetRotateRigthAxisValue = 0.0f;
 public:	
 	// Called every frame
 //	virtual void Tick(float DeltaTime) override;
