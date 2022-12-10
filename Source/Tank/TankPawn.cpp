@@ -7,9 +7,11 @@
 #include "Components/BoxComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
+#include "TankPlayerController.h"
+#include "Kismet/KismetMathLibrary.h"
 
-DECLARE_LOG_CATEGORY_EXTERN(TankLog, All, All);
-DEFINE_LOG_CATEGORY(TankLog);
+//DECLARE_LOG_CATEGORY_EXTERN(TankLog, All, All);
+//DEFINE_LOG_CATEGORY(TankLog);
 
 // Sets default values
 ATankPawn::ATankPawn()
@@ -41,7 +43,8 @@ ATankPawn::ATankPawn()
 void ATankPawn::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	//Для башни
+	TankController = Cast<ATankPlayerController>(GetController());
 }
 
 // Called every frame
@@ -51,14 +54,26 @@ void ATankPawn::Tick(float DeltaTime)
 	//GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Red, FString::Printf(TEXT("Hello")));
 	MoveFunction(&DeltaTime);
 
+	//Вращение танка
 	CurrentRightAxisValue = FMath::Lerp(CurrentRightAxisValue, targetRotateRigthAxisValue, InterpolationKey);
 	UE_LOG(LogTemp, Warning, TEXT("CurrentRightAxisValue = %f targetRotateRigthAxisValue = % f"), CurrentRightAxisValue, targetRotateRigthAxisValue);
 
 	float yawRotation = RotationSpeed * targetRotateRigthAxisValue * DeltaTime;
-FRotator currentRotation = GetActorRotation();
-yawRotation = currentRotation.Yaw + yawRotation;	
-FRotator newRotation = FRotator(0, yawRotation, 0);
-SetActorRotation(newRotation);
+	FRotator currentRotation = GetActorRotation();
+	yawRotation = currentRotation.Yaw + yawRotation;	
+	FRotator newRotation = FRotator(0, yawRotation, 0);
+	SetActorRotation(newRotation);
+
+	//Для башни
+	if (TankController)
+	{
+		FVector mousePos = TankController->GetMousePos();
+		FRotator targetRotation = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), mousePos);
+		FRotator currRotation = TurretMesh->GetComponentRotation();
+		targetRotation.Pitch = currRotation.Pitch;
+		targetRotation.Roll = currRotation.Roll;
+		TurretMesh->SetWorldRotation(FMath::Lerp(currRotation, targetRotation, TurretRotationInterpolationKey));
+	}
 }
 
 

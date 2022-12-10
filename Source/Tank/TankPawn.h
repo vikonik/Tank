@@ -8,7 +8,7 @@
 
 class UStaticMeshComponent;
 class USkeletalMeshComponent;
-
+class ATankPlayerController;
 UCLASS()
 class TANK_API ATankPawn : public APawn
 {
@@ -52,10 +52,20 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Movement|Speed")
 		float InterpolationKey = 0.1f;
 
+	//Для поворота башни
+	//UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Movement|Speed")
+	//	float InterpolationKey = 0.1f;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Turret|Speed")
+		float TurretRotationInterpolationKey = 0.5f;
+
+
 	float targetForwardAxisValue = 0.0f;
 	float targetRigthAxisValue = 0.0f;
 	float targetRotateRigthAxisValue = 0.0f;
 	float CurrentRightAxisValue;
+
+	UPROPERTY()
+		ATankPlayerController* TankController;
 public:	
 	// Called every frame
 //	virtual void Tick(float DeltaTime) override;
