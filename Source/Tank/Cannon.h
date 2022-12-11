@@ -26,6 +26,8 @@ public:
 	void FireSpecial();
 	void BurstFire();
 	void Recharge();
+	void BulletShot();
+
 	FTimerHandle ReloadTimer;
 	FTimerHandle BurstTimer;
 
@@ -50,7 +52,8 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Fire params")
 		ECannonType Type = ECannonType::FireProjectile;
 
-
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Fire params")
+		TSubclassOf<class AProjectile>ProjectileClass;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ammo")
 		int32 Bullet = 10;

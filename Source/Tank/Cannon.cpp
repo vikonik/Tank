@@ -5,6 +5,7 @@
 #include "Components/ArrowComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include "TimerManager.h"
+#include "Projectile.h"
 #include "Engine/Engine.h"
 
 // Sets default values
@@ -20,23 +21,25 @@ ACannon::ACannon()
 	ProjectileSpawnPoint->SetupAttachment(Mesh);
 }
 
+/*
+Собственно сам выстрел
+*/
+void ACannon::BulletShot() {
+	AProjectile* projectile = GetWorld()->SpawnActor<AProjectile>(ProjectileClass,
+		ProjectileSpawnPoint->GetComponentLocation(),
+		ProjectileSpawnPoint->GetComponentRotation());
+
+	if (projectile) {
+		projectile->Start();
+		//GEngine->AddOnScreenDebugMessage(2, 1, FColor::Green, "projectile spaun");
+	}
+}
+
 /**/
 void ACannon::Fire()
 {
 	if (!IsReadyToFire() )
 	{
-		//Вынесем это в IsReadyToFire()
-		//if (Bullet <= 0) {
-		//	if (!rechargeBegin) {//Если при нажатии не проверять на повторный выстркл, таймер перезапускается зпнова
-		//		GEngine->AddOnScreenDebugMessage(18, 1, FColor::Green, "Recharge? plese wait...");
-		//		GetWorld()->GetTimerManager().SetTimer(ReloadTimer, this, &ACannon::Recharge, 5, false);			
-		//	}
-		//	else {
-		//		GEngine->AddOnScreenDebugMessage(18, 1, FColor::Green, "not ready yet...");
-		//	}
-		//	rechargeBegin = true;
-		//}
-
 		return;
 	} 
 	ReadyToFire = false;
@@ -46,6 +49,7 @@ void ACannon::Fire()
 	{
 		GEngine->AddOnScreenDebugMessage(2, 1, FColor::Green, "Fire - projectile");
 		GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, FString::Printf(TEXT("Bullet is: %d"), Bullet));
+		BulletShot();
 	} 
 	else
 	{
@@ -62,7 +66,7 @@ void ACannon::Fire()
 */
 void ACannon::FireSpecial()
 {
-	if (!IsReadyToFire() || Bullet <= 0)
+	if (!IsReadyToFire())
 	{
 		return;
 	}
@@ -118,6 +122,7 @@ void ACannon::BurstFire()
 		GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, FString::Printf(TEXT("Bullet is: %d"), Bullet));
 		return;
 	}
+	BulletShot();
 	GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Green, "Pif-paff");//Столько раз стрельнули
 	CurrentBurts++;
 }
@@ -125,5 +130,6 @@ void ACannon::BurstFire()
 void ACannon::Recharge() {
 	rechargeBegin = false;
 	Bullet = 10;
+	Reload();
 	GEngine->AddOnScreenDebugMessage(10, 1, FColor::Green, "Recharge ready");
 }
