@@ -7,6 +7,7 @@
 #include "TimerManager.h"
 #include "Projectile.h"
 #include "Engine/Engine.h"
+#include "DrawDebugHelpers.h"
 
 // Sets default values
 ACannon::ACannon()
@@ -35,6 +36,30 @@ void ACannon::BulletShot() {
 	}
 }
 
+void ACannon::FireTrace()
+{
+	FHitResult hitResult;
+	FCollisionQueryParams traceParams;
+	traceParams.bTraceComplex = true;
+	traceParams.bReturnPhysicalMaterial = false;
+
+	FVector Start = ProjectileSpawnPoint->GetComponentLocation();
+	FVector End = Start + ProjectileSpawnPoint->GetForwardVector() * FireRange;
+
+	if (GetWorld()->LineTraceSingleByChannel(hitResult, Start, End, ECollisionChannel::ECC_GameTraceChannel1, traceParams))
+	{
+		DrawDebugLine(GetWorld(), Start, hitResult.Location, FColor::Purple, false, 1.0f, 0, 5.0f);
+		if (hitResult.GetActor())
+		{
+			//UE_LOG(LogTemp, Warning, TEXT("trace overlap : %s"), *hitResult.GetActor()->GetName());
+			hitResult.GetActor()->Destroy();
+		}
+	}
+	else
+	{
+		DrawDebugLine(GetWorld(), Start, End, FColor::Red, false, 1.0f, 0, 5.0f);
+	}
+}
 /**/
 void ACannon::Fire()
 {
@@ -53,6 +78,7 @@ void ACannon::Fire()
 	} 
 	else
 	{
+		FireTrace();
 		GEngine->AddOnScreenDebugMessage(3, 1,FColor::Green, "Fire - trace");
 		GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, FString::Printf(TEXT("Bullet is: %d"), Bullet));
 	}

@@ -26,8 +26,8 @@ public:
 	void FireSpecial();
 	void BurstFire();
 	void Recharge();
-	void BulletShot();
-
+	void BulletShot();//Выстрел снарядом
+	void FireTrace();//выстрел лучём
 	FTimerHandle ReloadTimer;
 	FTimerHandle BurstTimer;
 

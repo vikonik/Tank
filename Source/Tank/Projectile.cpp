@@ -5,6 +5,14 @@
 #include "Components/StaticMeshComponent.h"
 #include "TimerManager.h"
 
+#include <Components\SceneComponent.h>
+#include "Components/SphereComponent.h"
+//#include "DamageTaker.h"
+#include "GameStructs.h"
+#include "Particles\ParticleSystem.h"
+#include "Kismet\GameplayStatics.h"
+#include "Kismet/KismetSystemLibrary.h"
+#include "Particles\ParticleSystemComponent.h"
 // Sets default values
 AProjectile::AProjectile()
 {

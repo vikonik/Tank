@@ -52,7 +52,7 @@ void ATankPawn::BeginPlay()
 	Super::BeginPlay();
 	//Для башни
 	TankController = Cast<ATankPlayerController>(GetController());
-	SetupCannon();
+	SetupCannon(CannonClass);
 
 }
 
@@ -125,13 +125,13 @@ void ATankPawn::RotateRight(float Value)
 	targetRotateRigthAxisValue = Value;
 }
 
-void ATankPawn::SetupCannon()
+void ATankPawn::SetupCannon(TSubclassOf<ACannon> newCannon)
 {
 	if (Cannon)
 	{
 		Cannon->Destroy();
 	} 
-	
+	CannonClass = newCannon;
 	FActorSpawnParameters params;
 	params.Instigator = this;
 	params.Owner = this;
@@ -153,4 +153,14 @@ void ATankPawn::FireSpecial()
 	if (Cannon)
 		Cannon->FireSpecial();
 	
+}
+
+void ATankPawn::ChangeCannon()
+{
+	TSubclassOf<ACannon> CachedCannon;
+	CachedCannon = CannonClass;
+	CannonClass = SecondCannonClass;
+	SecondCannonClass = CachedCannon;
+	//Swap(EquippedCannonClass, SecondCannonClass);
+	SetupCannon(CannonClass);
 }

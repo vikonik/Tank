@@ -37,11 +37,13 @@ public:
 		void Fire();
 	void FireSpecial();
 
+	void ChangeCannon();
 
+void SetupCannon(TSubclassOf<ACannon> newCannon);
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-	void SetupCannon();
+	
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Components")
 		USkeletalMeshComponent* BodyMesh;
@@ -77,7 +79,8 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Turret|Cannon")
 		TSubclassOf<ACannon>CannonClass;
-
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Turret|Cannon")
+		TSubclassOf<ACannon>SecondCannonClass;
 	UPROPERTY()
 		ACannon* Cannon;
 
