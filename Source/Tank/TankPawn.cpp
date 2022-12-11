@@ -65,7 +65,7 @@ void ATankPawn::Tick(float DeltaTime)
 
 	//Вращение танка
 	CurrentRightAxisValue = FMath::Lerp(CurrentRightAxisValue, targetRotateRigthAxisValue, InterpolationKey);
-	UE_LOG(LogTemp, Warning, TEXT("CurrentRightAxisValue = %f targetRotateRigthAxisValue = % f"), CurrentRightAxisValue, targetRotateRigthAxisValue);
+	//UE_LOG(LogTemp, Warning, TEXT("CurrentRightAxisValue = %f targetRotateRigthAxisValue = % f"), CurrentRightAxisValue, targetRotateRigthAxisValue);
 
 	float yawRotation = RotationSpeed * targetRotateRigthAxisValue * DeltaTime;
 	FRotator currentRotation = GetActorRotation();
