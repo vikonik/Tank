@@ -30,7 +30,7 @@ public:
 	void FireTrace();//выстрел лучём
 	FTimerHandle ReloadTimer;
 	FTimerHandle BurstTimer;
-
+	void AddBulet();//Добавляемколмчество снарядов
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -62,7 +62,7 @@ protected:
 		int32 BurstSize = 5;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ammo")
-		float BurstInterval = 0.1f;
+		float BurstInterval = 0.2f;
 private:	
 	// Called every frame
 	bool ReadyToFire = true;

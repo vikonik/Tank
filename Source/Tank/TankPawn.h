@@ -40,6 +40,8 @@ public:
 	void ChangeCannon();
 
 void SetupCannon(TSubclassOf<ACannon> newCannon);
+ACannon* GetCannon() const { return Cannon; }//Чтобы получить существующий экземпляр пушки
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -81,6 +83,9 @@ protected:
 		TSubclassOf<ACannon>CannonClass;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Turret|Cannon")
 		TSubclassOf<ACannon>SecondCannonClass;
+
+	
+
 	UPROPERTY()
 		ACannon* Cannon;
 

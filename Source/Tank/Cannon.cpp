@@ -159,3 +159,8 @@ void ACannon::Recharge() {
 	Reload();
 	GEngine->AddOnScreenDebugMessage(10, 1, FColor::Green, "Recharge ready");
 }
+
+/**/
+void ACannon::AddBulet() {
+	GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Green, "AddBulet");
+}

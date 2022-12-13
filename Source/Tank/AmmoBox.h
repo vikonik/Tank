@@ -8,7 +8,7 @@ class TANK_API AAmmoBox : public AActor
 {
 	GENERATED_BODY()
 protected:
-	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Components")
 		UStaticMeshComponent* Mesh;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ammo")
 		TSubclassOf<ACannon> CannonClass;
