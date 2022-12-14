@@ -77,10 +77,15 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Cannon")
 		UArrowComponent* CannonSetupPoint;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Turret|Cannon")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Cannon")
 		TSubclassOf<ACannon>CannonClass;
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Turret|Cannon")
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Cannon")
 		TSubclassOf<ACannon>SecondCannonClass;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Cannon")
+		TSubclassOf<ACannon>TherdCannonClass;
+
 	UPROPERTY()
 		ACannon* Cannon;
 
@@ -93,6 +98,9 @@ protected:
 
 	UPROPERTY()
 		ATankPlayerController* TankController;
+
+	TSubclassOf<ACannon> CannonPul[3];
+	int canonCnt = 0;
 public:	
 	// Called every frame
 //	virtual void Tick(float DeltaTime) override;

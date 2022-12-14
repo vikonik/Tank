@@ -70,13 +70,13 @@ void ACannon::Fire()
 	ReadyToFire = false;
 	Bullet--;
 
-	if (Type == ECannonType::FireProjectile)
+	if (Type == ECannonType::FireProjectile || Type == ECannonType::FireAngryBullit)
 	{
 		GEngine->AddOnScreenDebugMessage(2, 1, FColor::Green, "Fire - projectile");
 		GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, FString::Printf(TEXT("Bullet is: %d"), Bullet));
 		BulletShot();
 	} 
-	else
+	else 
 	{
 		FireTrace();
 		GEngine->AddOnScreenDebugMessage(3, 1,FColor::Green, "Fire - trace");

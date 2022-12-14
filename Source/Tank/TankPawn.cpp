@@ -18,6 +18,10 @@
 // Sets default values
 ATankPawn::ATankPawn()
 {
+	CannonPul[0] = CannonClass;
+	CannonPul[1] = SecondCannonClass;
+	CannonPul[2] = TherdCannonClass;
+
  	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 	BoxCollision = CreateDefaultSubobject<UBoxComponent>(TEXT("RootComponent"));
@@ -53,7 +57,7 @@ void ATankPawn::BeginPlay()
 	//Для башни
 	TankController = Cast<ATankPlayerController>(GetController());
 	SetupCannon(CannonClass);
-
+	
 }
 
 // Called every frame
@@ -127,6 +131,7 @@ void ATankPawn::RotateRight(float Value)
 
 void ATankPawn::SetupCannon(TSubclassOf<ACannon> newCannon)
 {
+	UE_LOG(LogTemp, Warning, TEXT("SetupCannon() "));
 	if (Cannon)
 	{
 		Cannon->Destroy();
@@ -137,7 +142,7 @@ void ATankPawn::SetupCannon(TSubclassOf<ACannon> newCannon)
 	params.Owner = this;
 	Cannon = GetWorld()->SpawnActor<ACannon>(CannonClass, params);
 	Cannon->AttachToComponent(CannonSetupPoint, FAttachmentTransformRules::SnapToTargetNotIncludingScale);
-	//CannonSetupPoint->AttachToComponent(TurretMesh, FAttachmentTransformRules::KeepRelativeTransform);
+	
 }
 
 void ATankPawn::Fire()
@@ -155,12 +160,20 @@ void ATankPawn::FireSpecial()
 	
 }
 
+/*
+Переставляем местами орудия
+*/
 void ATankPawn::ChangeCannon()
 {
+
+
 	TSubclassOf<ACannon> CachedCannon;
 	CachedCannon = CannonClass;
 	CannonClass = SecondCannonClass;
-	SecondCannonClass = CachedCannon;
-	//Swap(EquippedCannonClass, SecondCannonClass);
+	SecondCannonClass = TherdCannonClass;
+	TherdCannonClass = CachedCannon;
+
 	SetupCannon(CannonClass);
+	if(canonCnt++ >= 3)
+		canonCnt = 0;
 }
