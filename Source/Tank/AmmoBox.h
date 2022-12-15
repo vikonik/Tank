@@ -12,6 +12,10 @@ protected:
 		UStaticMeshComponent* Mesh;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ammo")
 		TSubclassOf<ACannon> CannonClass;
+
+	//Чтобы можно было указывать количество патронов в ящике
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ammo")
+		int32 Bullet = 10;
 public:
 	AAmmoBox();
 protected:

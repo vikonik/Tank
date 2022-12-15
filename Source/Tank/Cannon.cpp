@@ -159,3 +159,10 @@ void ACannon::Recharge() {
 	Reload();
 	GEngine->AddOnScreenDebugMessage(10, 1, FColor::Green, "Recharge ready");
 }
+
+/*
+Длбавляем патроны в указанном в начтройкая ящика количестве
+*/
+void ACannon::AddBullet(int bullet) {
+	Bullet += bullet;
+}

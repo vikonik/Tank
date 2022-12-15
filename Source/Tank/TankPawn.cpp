@@ -165,14 +165,11 @@ void ATankPawn::FireSpecial()
 */
 void ATankPawn::ChangeCannon()
 {
-
-
 	TSubclassOf<ACannon> CachedCannon;
 	CachedCannon = CannonClass;
 	CannonClass = SecondCannonClass;
 	SecondCannonClass = TherdCannonClass;
 	TherdCannonClass = CachedCannon;
-
 	SetupCannon(CannonClass);
 	if(canonCnt++ >= 3)
 		canonCnt = 0;

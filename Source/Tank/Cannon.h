@@ -30,7 +30,7 @@ public:
 	void FireTrace();//выстрел лучём
 	FTimerHandle ReloadTimer;
 	FTimerHandle BurstTimer;
-
+	void AddBullet(int bullet); //Добавили патронов из ящика
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

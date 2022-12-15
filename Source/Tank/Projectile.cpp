@@ -50,7 +50,7 @@ void AProjectile::OnMeshOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor
 	//if (OtherActor) {
 		UE_LOG(LogTemp, Warning, TEXT("Projectile %s collided with %s. "), *GetName(), *OtherActor->GetName());
 		GEngine->AddOnScreenDebugMessage(-1, 1, FColor::Red, "Projectile collided");
-		OtherActor->Destroy();
+		//OtherActor->Destroy();//Удаляет объект в который врезался
 		Destroy();
 	//}
 

@@ -40,6 +40,8 @@ public:
 	void ChangeCannon();
 
 void SetupCannon(TSubclassOf<ACannon> newCannon);
+
+ACannon* GetCannon() const { return Cannon; }
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -86,8 +88,10 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Cannon")
 		TSubclassOf<ACannon>TherdCannonClass;
 
+
 	UPROPERTY()
 		ACannon* Cannon;
+
 
 
 
