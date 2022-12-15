@@ -17,7 +17,7 @@ enum class ECannonType : uint8 {
 };
 
 USTRUCT()
-struct FDamageData
+struct  FDamageData
 {
 	GENERATED_BODY()
 
