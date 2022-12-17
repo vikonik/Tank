@@ -4,7 +4,7 @@
 #include "Projectile.h"
 #include "Components/StaticMeshComponent.h"
 #include "TimerManager.h"
-
+#include "DamageTaker.h"
 #include <Components\SceneComponent.h>
 #include "Components/SphereComponent.h"
 //#include "DamageTaker.h"
@@ -47,12 +47,32 @@ void AProjectile::Move()
 
 void AProjectile::OnMeshOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	//if (OtherActor) {
-		UE_LOG(LogTemp, Warning, TEXT("Projectile %s collided with %s. "), *GetName(), *OtherActor->GetName());
-		GEngine->AddOnScreenDebugMessage(-1, 1, FColor::Red, "Projectile collided");
-		OtherActor->Destroy();//Удаляет объект в который врезался
+	
+		//Определяем чей снаряд
+		AActor* owner = GetOwner();												    //Владелец снаряда это пушка
+		AActor* ownerByOwner = (owner != nullptr) ? owner->GetOwner() : nullptr;	//Здесь определяем кто владелец владельца снаряда(кто владелец пушки, турель или танк)
+																					//Какой-то мутный тернарник...
+
+		if (OtherActor != owner || OtherActor != ownerByOwner) { //Проверяем, что не попали сами в себя
+		IDamageTaker* damageTakerActor = Cast<IDamageTaker>(OtherActor);//Пытаемся понять есть ли у актора с которым пересеклись интерфейс на получение урона
+		if (damageTakerActor)
+		{
+			FDamageData damageData;
+			damageData.DamageValue = Damage;
+			damageData.Instigator = owner;//владелец снаряда(пушка)
+			damageData.DamageMaker = this;
+			damageTakerActor->TakeDamage(damageData);
+		} 
+		else
+		{		
+			UE_LOG(LogTemp, Warning, TEXT("Projectile %s collided with %s. "), *GetName(), *OtherActor->GetName());
+			GEngine->AddOnScreenDebugMessage(-1, 1, FColor::Red, "Projectile collided");
+			OtherActor->Destroy();
+		}
+
+		//OtherActor->Destroy();//Удаляет объект в который врезался
 		Destroy();
-	//}
+	}
 
 }
 

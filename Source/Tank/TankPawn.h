@@ -7,6 +7,8 @@
 #include "GameStructs.h"
 //#include "Engine/Engine.h"
 #include "Components/ArrowComponent.h"
+#include "DamageTaker.h"
+#include "HealthComponent.h"
 #include "TankPawn.generated.h"
 
 
@@ -38,10 +40,15 @@ public:
 	void FireSpecial();
 
 	void ChangeCannon();
-
+	UFUNCTION()
+		void TakeDamage(FDamageData DamageData);
 void SetupCannon(TSubclassOf<ACannon> newCannon);
 
 ACannon* GetCannon() const { return Cannon; }
+
+UFUNCTION(BlueprintCallable)
+class UHealthComponent* GetHealthComponent() const { return HealthComponent; }
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -88,7 +95,12 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Cannon")
 		TSubclassOf<ACannon>TherdCannonClass;
 
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
+		UBoxComponent* HitCollider;//Колайдер
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Components")
+		class UHealthComponent* HealthComponent;
+	    
 	UPROPERTY()
 		ACannon* Cannon;
 
@@ -105,6 +117,11 @@ protected:
 
 	TSubclassOf<ACannon> CannonPul[3];
 	int canonCnt = 0;
+
+	UFUNCTION()
+		void Die();
+	UFUNCTION()
+		void DamageTaked(float DamageValue);
 public:	
 	// Called every frame
 //	virtual void Tick(float DeltaTime) override;

@@ -16,7 +16,9 @@ enum class ECannonType : uint8 {
 	FireAngryBullit = 2 UMETA(DisplayName = "Use angryBullit")
 };
 
+
 USTRUCT()
+
 struct  FDamageData
 {
 	GENERATED_BODY()

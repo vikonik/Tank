@@ -10,6 +10,8 @@
 #include "TankPlayerController.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Cannon.h"
+#include "HealthComponent.h"
+#include "DamageTaker.h"
 #include "Components/ArrowComponent.h"
 
 //DECLARE_LOG_CATEGORY_EXTERN(TankLog, All, All);
@@ -24,6 +26,8 @@ ATankPawn::ATankPawn()
 
  	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+
+	
 	BoxCollision = CreateDefaultSubobject<UBoxComponent>(TEXT("RootComponent"));
 	RootComponent = BoxCollision;
 									  
@@ -48,6 +52,30 @@ ATankPawn::ATankPawn()
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	Camera->SetupAttachment(SpringArm);
 
+	HitCollider = CreateDefaultSubobject<UBoxComponent>(TEXT("Hit collider"));
+	HitCollider->SetupAttachment(BodyMesh);
+
+	HealthComponent = CreateDefaultSubobject<UHealthComponent>(TEXT("HealthComponent"));
+	HealthComponent->OnDamaged.AddUObject(this, &ATankPawn::DamageTaked);
+	HealthComponent->OnDie.AddUObject(this, &ATankPawn::Die);
+
+
+}
+
+void ATankPawn::TakeDamage(FDamageData DamageData)
+{
+	HealthComponent->TakeDamage(DamageData);
+} 
+
+void ATankPawn::Die()
+{
+
+	Destroy();
+} 
+
+void ATankPawn::DamageTaked(float DamageValue)
+{
+	UE_LOG(LogTemp, Warning, TEXT("Tank %s taked damage:%f Health:%f"), *GetName(),	DamageValue, HealthComponent->GetHealth());
 }
 
 // Called when the game starts or when spawned
