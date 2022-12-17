@@ -53,7 +53,7 @@ void AProjectile::OnMeshOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor
 		AActor* ownerByOwner = (owner != nullptr) ? owner->GetOwner() : nullptr;	//Здесь определяем кто владелец владельца снаряда(кто владелец пушки, турель или танк)
 																					//Какой-то мутный тернарник...
 
-		if (OtherActor != owner || OtherActor != ownerByOwner) { //Проверяем, что не попали сами в себя
+	if (OtherActor != owner || OtherActor != ownerByOwner) { //Проверяем, что не попали сами в себя
 		IDamageTaker* damageTakerActor = Cast<IDamageTaker>(OtherActor);//Пытаемся понять есть ли у актора с которым пересеклись интерфейс на получение урона
 		if (damageTakerActor)
 		{
@@ -71,8 +71,9 @@ void AProjectile::OnMeshOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor
 		}
 
 		//OtherActor->Destroy();//Удаляет объект в который врезался
-		Destroy();
+		
 	}
+Destroy();
 
 }
 
