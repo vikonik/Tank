@@ -57,6 +57,7 @@ void AProjectile::OnMeshOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor
 		IDamageTaker* damageTakerActor = Cast<IDamageTaker>(OtherActor);//Пытаемся понять есть ли у актора с которым пересеклись интерфейс на получение урона
 		if (damageTakerActor)
 		{
+			UE_LOG(LogTemp, Warning, TEXT("Projectile %s collided with %s. can has damage"), *GetName(), *OtherActor->GetName());
 			FDamageData damageData;
 			damageData.DamageValue = Damage;
 			damageData.Instigator = owner;//владелец снаряда(пушка)
@@ -65,8 +66,8 @@ void AProjectile::OnMeshOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor
 		} 
 		else
 		{		
-			UE_LOG(LogTemp, Warning, TEXT("Projectile %s collided with %s. "), *GetName(), *OtherActor->GetName());
-			GEngine->AddOnScreenDebugMessage(-1, 1, FColor::Red, "Projectile collided");
+			UE_LOG(LogTemp, Warning, TEXT("Projectile %s collided with %s. can't has damage, fuul destroy"), *GetName(), *OtherActor->GetName());
+		//	GEngine->AddOnScreenDebugMessage(-1, 1, FColor::Red, "Projectile collided");
 			OtherActor->Destroy();
 		}
 

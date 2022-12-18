@@ -1,15 +1,16 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
-#include "Cannon.h"
 #include "CoreMinimal.h"
+#include "Cannon.h"
+
 #include "GameFramework/Pawn.h"
 #include "GameStructs.h"
 //#include "Engine/Engine.h"
 #include "Components/ArrowComponent.h"
 #include "DamageTaker.h"
 #include "HealthComponent.h"
-#include "TankPawn.generated.h"
+#include "TankPawnTest.generated.h"
 
 
 
@@ -20,13 +21,13 @@ class ACannon;
 class UArrowComponent;
 
 UCLASS()
-class TANK_API ATankPawn : public APawn, public IDamageTaker
+class TANK_API ATankPawnTest : public APawn
 {
 	GENERATED_BODY()
 
 public:
 	// Sets default values for this pawn's properties
-	ATankPawn();
+	ATankPawnTest();
 	virtual void Tick(float DeltaTime) override;
 
 	void MoveForward(float Value);
@@ -36,7 +37,7 @@ public:
 	// Called to bind functionality to input
 //	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	//UFUNCTION()
-		void Fire();
+	void Fire();
 	void FireSpecial();
 
 	void ChangeCannon();
@@ -45,20 +46,20 @@ public:
 		void TakeDamage(FDamageData DamageData);
 	/**********************************************************************/
 
-void SetupCannon(TSubclassOf<ACannon> newCannon);
+	void SetupCannon(TSubclassOf<ACannon> newCannon);
 
-ACannon* GetCannon() const { return Cannon; }
+	ACannon* GetCannon() const { return Cannon; }
 
-UFUNCTION(BlueprintCallable)
-class UHealthComponent* GetHealthComponent() const { return HealthComponent; }
+	//UFUNCTION(BlueprintCallable)
+	//class UHealthComponent* GetHealthComponent() const { return HealthComponent; }
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-	
+
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Components")
-		USkeletalMeshComponent* BodyMesh;
+		USkeletalMeshComponent* BodyMesh;//USkeletalMeshComponent
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Components")
 		UStaticMeshComponent* TurretMesh;
@@ -104,9 +105,6 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Components")
 		class UHealthComponent* HealthComponent;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Targeting")
-		float IDamageTaker = 10;
 	/**********************************************************************/
 	UPROPERTY()
 		ACannon* Cannon;
@@ -129,7 +127,7 @@ protected:
 		void Die();
 	UFUNCTION()
 		void DamageTaked(float DamageValue);
-public:	
+public:
 	// Called every frame
 //	virtual void Tick(float DeltaTime) override;
 
