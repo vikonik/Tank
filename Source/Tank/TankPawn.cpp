@@ -1,7 +1,16 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+/*
+* ”несли в базовый класс:
+HealthComponent
+void ATankPawn::TakeDamage(FDamageData DamageData)
+void ATankPawn::Die()
+void ATankPawn::DamageTaked(float DamageValue)
+
+
+*/
 
 
 #include "TankPawn.h"
+
 #include "Components/BoxComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Components/StaticMeshComponent.h"
@@ -55,36 +64,10 @@ ATankPawn::ATankPawn()
 	/************–еализуем интерфейс здоровь€ урок 5 стр 17************************/
 	HitCollider = CreateDefaultSubobject<UBoxComponent>(TEXT("Hit collider"));
 	HitCollider->SetupAttachment(RootComponent);//BodyMesh
-
-	HealthComponent = CreateDefaultSubobject<UHealthComponent>(TEXT("HealthComponent"));
-	HealthComponent->OnDamaged.AddUObject(this, &ATankPawn::DamageTaked);
-	HealthComponent->OnDie.AddUObject(this, &ATankPawn::Die);
-	
-
 	/**********************************************************************/
 
 }
 
-void ATankPawn::TakeDamage(FDamageData DamageData)
-{
-	HealthComponent->TakeDamage(DamageData);
-} 
-
-/*
-танк подбит
-*/
-void ATankPawn::Die()
-{
-	Destroy();
-} 
-
-/*
-попали в танк, минусуем здоровье
-*/
-void ATankPawn::DamageTaked(float DamageValue)
-{
-	UE_LOG(LogTemp, Warning, TEXT("Tank %s taked damage:%f Health:%f"), *GetName(),	DamageValue, HealthComponent->GetHealth());
-}
 
 // Called when the game starts or when spawned
 void ATankPawn::BeginPlay()

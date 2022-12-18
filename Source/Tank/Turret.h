@@ -11,10 +11,19 @@
 #include "Components/BoxComponent.h"
 #include "GameFramework/Actor.h"
 #include "Cannon.h"
+
+#include "BasePawn.h"
+
 #include "Turret.generated.h"
 
+class UStaticMeshComponent;
+class UArrowComponent;
+class UBoxComponent;
+class UHealthComponent;
+class ACannon;
+
 UCLASS()
-class TANK_API ATurret : public AActor, public IDamageTaker
+class TANK_API ATurret : public ABasePawn /*AActor, public IDamageTaker*/
 {
 	GENERATED_BODY()
 	
@@ -22,13 +31,13 @@ public:
 	// Sets default values for this actor's properties
 	ATurret();
 
-	UFUNCTION()
-		void TakeDamage(FDamageData DamageData) ;
+	//UFUNCTION()
+	//	void TakeDamage(FDamageData DamageData) ;
 
-	UFUNCTION()
-		void Die();
-	UFUNCTION()
-		void DamageTaked(float DamageValue);
+	//UFUNCTION()
+	//	void Die();
+	//UFUNCTION()
+	//	void DamageTaked(float DamageValue);
 
 protected:
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
@@ -57,8 +66,8 @@ protected:
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
 		UBoxComponent* HitCollider;//Колайдер
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Components")
-		class UHealthComponent* HealthComponent;
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Components")
+	//	class UHealthComponent* HealthComponent;
 	/**********************************************************************/
 	//Загркзка из кода
 	const FString BodyMeshPath = "StaticMesh'/Game/CSC/Meshes/SM_CSC_Tower1.SM_CSC_Tower1'";

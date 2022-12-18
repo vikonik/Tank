@@ -8,6 +8,7 @@
 #include "Projectile.h"
 #include "Engine/Engine.h"
 #include "DrawDebugHelpers.h"
+#include "DamageTaker.h"
 
 // Sets default values
 ACannon::ACannon()
@@ -46,13 +47,66 @@ void ACannon::FireTrace()
 	FVector Start = ProjectileSpawnPoint->GetComponentLocation();
 	FVector End = Start + ProjectileSpawnPoint->GetForwardVector() * FireRange;
 
-	if (GetWorld()->LineTraceSingleByChannel(hitResult, Start, End, ECollisionChannel::ECC_GameTraceChannel1, traceParams))
+	UE_LOG(LogTemp, Warning, TEXT("FireTrace fire 1"));
+
+	if (GetWorld()->LineTraceSingleByChannel(hitResult, Start, End, ECollisionChannel::ECC_WorldDynamic, traceParams)) {
+		UE_LOG(LogTemp, Warning, TEXT("FireTrace fire ECC_WorldDynamic "));
+	}
+	else if (GetWorld()->LineTraceSingleByChannel(hitResult, Start, End, ECollisionChannel::ECC_WorldStatic, traceParams)) {
+			UE_LOG(LogTemp, Warning, TEXT("FireTrace fire ECC_WorldStatic "));
+		}
+		else if (GetWorld()->LineTraceSingleByChannel(hitResult, Start, End, ECollisionChannel::ECC_PhysicsBody, traceParams)){
+		UE_LOG(LogTemp, Warning, TEXT("FireTrace fire ECC_PhysicsBody "));
+	}
+		else if (GetWorld()->LineTraceSingleByChannel(hitResult, Start, End, ECollisionChannel::ECC_Pawn, traceParams)) {
+		UE_LOG(LogTemp, Warning, TEXT("FireTrace fire ECC_Pawn "));
+	}
+		else if (GetWorld()->LineTraceSingleByChannel(hitResult, Start, End, ECollisionChannel::ECC_Visibility, traceParams)) {
+		UE_LOG(LogTemp, Warning, TEXT("FireTrace fire ECC_Visibility "));
+	}
+		else if (GetWorld()->LineTraceSingleByChannel(hitResult, Start, End, ECollisionChannel::ECC_PhysicsBody, traceParams)) {
+		UE_LOG(LogTemp, Warning, TEXT("FireTrace fire ECC_PhysicsBody "));
+	}
+
+		else if (GetWorld()->LineTraceSingleByChannel(hitResult, Start, End, ECollisionChannel::ECC_Vehicle, traceParams)) {
+		UE_LOG(LogTemp, Warning, TEXT("FireTrace fire ECC_Vehicle "));
+	}
+		else if (GetWorld()->LineTraceSingleByChannel(hitResult, Start, End, ECollisionChannel::ECC_Destructible, traceParams)) {
+		UE_LOG(LogTemp, Warning, TEXT("FireTrace fire ECC_Destructible "));
+	}
+		else if (GetWorld()->LineTraceSingleByChannel(hitResult, Start, End, ECollisionChannel::ECC_EngineTraceChannel1, traceParams)) {
+		UE_LOG(LogTemp, Warning, TEXT("FireTrace fire ECC_EngineTraceChannel1 "));
+	}
+		else {
+		UE_LOG(LogTemp, Warning, TEXT("FireTrace fire PROBLEM "));
+	}
+
+
+	if (GetWorld()->LineTraceSingleByChannel(hitResult, Start, End, ECollisionChannel::ECC_Visibility, traceParams))//ECC_GameTraceChannel1
 	{
-		DrawDebugLine(GetWorld(), Start, hitResult.Location, FColor::Purple, false, 1.0f, 0, 5.0f);
-		if (hitResult.GetActor())
+		UE_LOG(LogTemp, Warning, TEXT("FireTrace fire 2 "));
+		DrawDebugLine(GetWorld(), Start, hitResult.Location, FColor::Purple, false, 1.0f, 0, 5.0f);//Цвет луча при попадании в цель
+
+		//if (hitResult.GetActor())
+		//{
+		//	UE_LOG(LogTemp, Warning, TEXT("trace overlap : %s"), *hitResult.GetActor()->GetName());
+		//	hitResult.GetActor()->Destroy();
+		//}
+
+		if (IDamageTaker* DamageTaker = Cast<IDamageTaker>(hitResult.Actor.Get()))//Если цель может получать урон
 		{
-			UE_LOG(LogTemp, Warning, TEXT("trace overlap : %s"), *hitResult.GetActor()->GetName());
-			hitResult.GetActor()->Destroy();
+			AActor* MyInstigator = GetInstigator();
+			if (hitResult.Actor.Get() != MyInstigator)
+			{
+				FDamageData DamageData;
+				DamageData.DamageValue = FireDamage;
+				DamageData.DamageMaker = this;
+				DamageData.Instigator = MyInstigator;
+				DamageTaker->TakeDamage(DamageData);
+			}
+		}
+		else {
+		
 		}
 	}
 	else

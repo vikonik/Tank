@@ -9,6 +9,7 @@
 #include "Components/ArrowComponent.h"
 #include "DamageTaker.h"
 #include "HealthComponent.h"
+#include "BasePawn.h"
 #include "TankPawn.generated.h"
 
 
@@ -20,7 +21,7 @@ class ACannon;
 class UArrowComponent;
 
 UCLASS()
-class TANK_API ATankPawn : public APawn, public IDamageTaker
+class TANK_API ATankPawn :  public ABasePawn /*,public APawn , public IDamageTaker *///
 {
 	GENERATED_BODY()
 
@@ -40,10 +41,7 @@ public:
 	void FireSpecial();
 
 	void ChangeCannon();
-	/************Реализуем интерфейс здоровья*****************************/
-	UFUNCTION()
-		void TakeDamage(FDamageData DamageData);
-	/**********************************************************************/
+
 
 void SetupCannon(TSubclassOf<ACannon> newCannon);
 
@@ -73,7 +71,7 @@ protected:
 		class UCameraComponent* Camera;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
-		float MoveSpeed = 100.0f;
+		float MoveSpeed = 500.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
 		float RotationSpeed = 100.0f;
@@ -102,16 +100,12 @@ protected:
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
 		UBoxComponent* HitCollider;//Колайдер
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Components")
-		class UHealthComponent* HealthComponent;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Targeting")
 		float IDamageTaker = 10;
 	/**********************************************************************/
 	UPROPERTY()
 		ACannon* Cannon;
-
-
 
 
 	float targetForwardAxisValue = 0.0f;
@@ -125,10 +119,12 @@ protected:
 	TSubclassOf<ACannon> CannonPul[3];
 	int canonCnt = 0;
 
-	UFUNCTION()
-		void Die();
-	UFUNCTION()
-		void DamageTaked(float DamageValue);
+	/********************Унесли в базовый класс****************************/
+	//UFUNCTION()
+	//	void Die();
+	//UFUNCTION()
+	//	void DamageTaked(float DamageValue);
+	/************************************************/
 public:	
 	// Called every frame
 //	virtual void Tick(float DeltaTime) override;

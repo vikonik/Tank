@@ -64,7 +64,7 @@ void ATankPlayerController::Fire()
 {
 	if (TankPawn)
 		TankPawn->Fire();
-	//GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Red, FString::Printf(TEXT("Fire")));
+	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, FString::Printf(TEXT("Fire")));
 }
 
 void ATankPlayerController::FireSpecial()

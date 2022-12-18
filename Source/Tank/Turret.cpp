@@ -1,4 +1,6 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+/*
+
+*/
 
 #include "Turret.h"
 #include "TankPlayerController.h"
@@ -44,29 +46,11 @@ ATurret::ATurret()
 	if (turretMeshTemp)
 		TurretMesh->SetStaticMesh(turretMeshTemp);
 
-	HealthComponent = CreateDefaultSubobject<UHealthComponent>(TEXT("HealthComponent"));
-	HealthComponent->OnDamaged.AddUObject(this, &ATurret::DamageTaked);
-	HealthComponent->OnDie.AddUObject(this, &ATurret::Die);
+
 
 
 }
 
-void ATurret::TakeDamage(FDamageData DamageData)
-{
-	UE_LOG(LogTemp, Warning, TEXT("Turret %s taked damage:%f "), *GetName(), DamageData.DamageValue);
-	HealthComponent->TakeDamage(DamageData);
-}
-
-
-void ATurret::Die()
-{
-	Destroy();
-}
-
-void ATurret::DamageTaked(float DamageValue)
-{
-	UE_LOG(LogTemp, Warning, TEXT("Turret %s taked damage:%f Health:%f"), *GetName(), DamageValue, HealthComponent->GetHealth());
-}
 
 // Called when the game starts or when spawned
 void ATurret::BeginPlay()
