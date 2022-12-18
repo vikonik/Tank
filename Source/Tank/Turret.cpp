@@ -111,7 +111,7 @@ bool ATurret::IsPlayerInRange()
 {
 	return FVector::Distance(PlayerPawn->GetActorLocation(), GetActorLocation()) <= TargetingRange;
 }
-
+  
 /**/
 bool ATurret::CanFire()
 {
