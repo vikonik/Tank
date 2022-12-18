@@ -40,8 +40,11 @@ public:
 	void FireSpecial();
 
 	void ChangeCannon();
+	/************Реализуем интерфейс здоровья*****************************/
 	UFUNCTION()
 		void TakeDamage(FDamageData DamageData);
+	/**********************************************************************/
+
 void SetupCannon(TSubclassOf<ACannon> newCannon);
 
 ACannon* GetCannon() const { return Cannon; }
@@ -95,12 +98,13 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Cannon")
 		TSubclassOf<ACannon>TherdCannonClass;
 
+	/************Реализуем интерфейс здоровья*****************************/
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
 		UBoxComponent* HitCollider;//Колайдер
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Components")
 		class UHealthComponent* HealthComponent;
-	    
+	/**********************************************************************/
 	UPROPERTY()
 		ACannon* Cannon;
 

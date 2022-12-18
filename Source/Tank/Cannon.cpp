@@ -51,7 +51,7 @@ void ACannon::FireTrace()
 		DrawDebugLine(GetWorld(), Start, hitResult.Location, FColor::Purple, false, 1.0f, 0, 5.0f);
 		if (hitResult.GetActor())
 		{
-			//UE_LOG(LogTemp, Warning, TEXT("trace overlap : %s"), *hitResult.GetActor()->GetName());
+			UE_LOG(LogTemp, Warning, TEXT("trace overlap : %s"), *hitResult.GetActor()->GetName());
 			hitResult.GetActor()->Destroy();
 		}
 	}
