@@ -204,11 +204,9 @@ FVector ATankPawn::GetTurretForwardVector()
 /**/
 void ATankPawn::RotateTurretTo(FVector TargetPosition)
 {
-	FRotator targetRotation =
-		UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), TargetPosition);
+	FRotator targetRotation = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), TargetPosition);
 	FRotator currRotation = TurretMesh->GetComponentRotation();
 	targetRotation.Pitch = currRotation.Pitch;
 	targetRotation.Roll = currRotation.Roll;
-	TurretMesh->SetWorldRotation(FMath::Lerp(currRotation, targetRotation,
-		TurretRotationInterpolationKey));
+	TurretMesh->SetWorldRotation(FMath::Lerp(currRotation, targetRotation, TurretRotationInterpolationKey));
 }
