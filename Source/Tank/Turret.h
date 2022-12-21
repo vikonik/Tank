@@ -38,7 +38,7 @@ public:
 	//	void Die();
 	//UFUNCTION()
 	//	void DamageTaked(float DamageValue);
-
+	FVector GetEyesPosition();//Глаза для AI
 protected:
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
 		UStaticMeshComponent* BodyMesh;
@@ -82,4 +82,5 @@ protected:
 	bool CanFire();
 	void Fire();
 	void SetupCannon(TSubclassOf<ACannon> newCamnnonClass);
+	bool IsPlayerSeen();
 };

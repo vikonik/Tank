@@ -14,6 +14,7 @@
 #include "DamageTaker.h"
 #include "GameStructs.h"
 #include "HealthComponent.h"
+#include "DrawDebugHelpers.h"
 // Sets default values
 /*
 53-я минута на видосике. Почему преаод делает не так как в методичке? В чем разница?
@@ -46,7 +47,7 @@ ATurret::ATurret()
 	if (turretMeshTemp)
 		TurretMesh->SetStaticMesh(turretMeshTemp);
 
-
+	//TankPawn = Cast<ATankPawn>(GetPawn());
 
 
 }
@@ -115,7 +116,8 @@ bool ATurret::IsPlayerInRange()
 /**/
 bool ATurret::CanFire()
 {
-	
+	if (!IsPlayerSeen())
+		return false;
 	FVector targetingDir = TurretMesh->GetForwardVector();
 	FVector dirToPlayer = PlayerPawn->GetActorLocation() - GetActorLocation();
 	dirToPlayer.Normalize();
@@ -140,4 +142,34 @@ void ATurret::SetupCannon(TSubclassOf<ACannon> newCamnnonClass)
 	params.Owner = this;
 	Cannon = GetWorld()->SpawnActor<ACannon>(CannonClass, params);
 	Cannon->AttachToComponent(CannonSetupPoint, FAttachmentTransformRules::SnapToTargetNotIncludingScale);
+}
+
+FVector ATurret::GetEyesPosition()
+{
+	return CannonSetupPoint->GetComponentLocation();
+}
+
+//Проверяем видимость игрова турелью
+bool ATurret::IsPlayerSeen()
+{
+	FVector playerPos = PlayerPawn->GetActorLocation();
+	FVector eyesPos = this->GetEyesPosition();
+	FHitResult hitResult;
+	FCollisionQueryParams traceParams =	FCollisionQueryParams(FName(TEXT("FireTrace")), true, this);
+	traceParams.bTraceComplex = true;
+	traceParams.AddIgnoredActor(this);
+	traceParams.bReturnPhysicalMaterial = false;
+	if (GetWorld()->LineTraceSingleByChannel(hitResult, eyesPos, playerPos,
+		ECollisionChannel::ECC_Visibility, traceParams))
+	{
+		if (hitResult.Actor.Get())
+		{
+			DrawDebugLine(GetWorld(), eyesPos, hitResult.Location, FColor::Cyan,
+				false, 0.5f, 0, 10);
+			return hitResult.Actor.Get() == PlayerPawn;
+		}
+	}
+
+	DrawDebugLine(GetWorld(), eyesPos, playerPos, FColor::Cyan, false, 0.5f, 0, 10);
+	return false;
 }

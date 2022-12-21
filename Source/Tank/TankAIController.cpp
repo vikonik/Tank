@@ -82,8 +82,8 @@ bool ATankAIController::IsPlayerInRange()
 
 bool ATankAIController::CanFire()
 {
-	if (!IsPlayerSeen())
-		return false;
+	//if (!IsPlayerSeen())
+	//	return false;
 	FVector targetingDir = TankPawn->GetTurretForwardVector();
 	FVector dirToPlayer = PlayerPawn->GetActorLocation() -
 		TankPawn->GetActorLocation();
