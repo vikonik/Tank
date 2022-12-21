@@ -21,6 +21,14 @@ ACannon::ACannon()
 	Mesh->SetupAttachment(RootComponent);
 	ProjectileSpawnPoint = CreateDefaultSubobject<UArrowComponent>(TEXT("Spawn point"));
 	ProjectileSpawnPoint->SetupAttachment(Mesh);
+
+	ShootEffect = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("ShootEffect"));
+	ShootEffect->SetupAttachment(ProjectileSpawnPoint);
+	ShootEffect->SetAutoActivate(false);//Чтобы небыло выстрела при старте
+
+		AudioEffect = CreateDefaultSubobject<UAudioComponent>(TEXT("AudioCjvponent"));
+		AudioEffect->SetupAttachment(sceeneCpm);
+		AudioEffect->SetAutoActivate(false);//Чтобы небыло выстрела при старте
 }
 
 /*
@@ -136,6 +144,9 @@ void ACannon::Fire()
 		GEngine->AddOnScreenDebugMessage(3, 1,FColor::Green, "Fire - trace");
 		GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, FString::Printf(TEXT("Bullet is: %d"), Bullet));
 	}
+
+	ShootEffect->ActivateSystem();
+	AudioEffect->Play();
 
 	GetWorld()->GetTimerManager().SetTimer(ReloadTimer, this, &ACannon::Reload, 1 / FireRate, false);//FireRate - Время перезарядки
 } 

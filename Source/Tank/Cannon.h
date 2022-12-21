@@ -7,6 +7,17 @@
 #include "GameFramework/Actor.h"
 
 #include "Engine/Engine.h"
+
+#include "CoreMinimal.h"
+#include "GameStructs.h"
+#include "Projectile.h"
+//#include "Camera/CameraShake.h"
+#include "Components/AudioComponent.h"
+#include "GameFramework/Actor.h"
+#include "GameFramework/ForceFeedbackEffect.h"
+#include "Particles/ParticleSystemComponent.h"
+
+
 #include "Cannon.generated.h"
 
 class UArrowComponent;
@@ -63,6 +74,12 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ammo")
 		float BurstInterval = 0.2f;
+
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
+		UParticleSystemComponent* ShootEffect;
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
+		UAudioComponent* AudioEffect;
+
 private:	
 	// Called every frame
 	bool ReadyToFire = true;
