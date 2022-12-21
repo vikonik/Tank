@@ -32,7 +32,7 @@ ATurret::ATurret()
 
 	TurretMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Turretturret"));
 	TurretMesh->SetupAttachment(BodyMesh, "ADD_Parts_Here_Socket");//Программная точка установки башни
-
+	 
 	CannonSetupPoint = CreateDefaultSubobject<UArrowComponent>(TEXT("Cannon setup point"));
 	CannonSetupPoint->SetupAttachment(TurretMesh);
 	

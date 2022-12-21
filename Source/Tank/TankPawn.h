@@ -61,6 +61,7 @@ UFUNCTION()
 TArray<FVector> GetPatrollingPoints() { return PatrollingPoints; };
 UFUNCTION()
 float GetMovementAccurency() { return MovementAccurency; };
+FVector GetEyesPosition();//Глаза для AI
 /**********************************************************************/
 protected:
 	// Called when the game starts or when spawned
