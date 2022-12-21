@@ -47,8 +47,8 @@ protected:
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
 		UArrowComponent* CannonSetupPoint;//Менсто установки турели
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ammo")
-		TSubclassOf<ACannon> CannonClass;
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ammo")
+	//	TSubclassOf<ACannon> CannonClass;
 	UPROPERTY()
 		ACannon* Cannon;
 	UPROPERTY()
@@ -73,6 +73,15 @@ protected:
 	const FString BodyMeshPath = "StaticMesh'/Game/CSC/Meshes/SM_CSC_Tower1.SM_CSC_Tower1'";
 	const FString TurretMeshPath = "StaticMesh'/Game/CSC/Meshes/SM_CSC_Gun1.SM_CSC_Gun1'";
 
+
+	//Смена орудия
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Cannon")
+		TSubclassOf<ACannon>TurretCannonClass;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Cannon")
+		TSubclassOf<ACannon>TurretSecondCannonClass;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Cannon")
+		float TimeToChangeCannon = 5;
 protected:
 	virtual void BeginPlay() override;
 	virtual void Destroyed() override;
@@ -83,4 +92,7 @@ protected:
 	void Fire();
 	void SetupCannon(TSubclassOf<ACannon> newCamnnonClass);
 	bool IsPlayerSeen();
+
+	UFUNCTION()
+	void ChangeCannon();
 };

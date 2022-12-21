@@ -47,7 +47,7 @@ ATurret::ATurret()
 	if (turretMeshTemp)
 		TurretMesh->SetStaticMesh(turretMeshTemp);
 
-	//TankPawn = Cast<ATankPawn>(GetPawn());
+	
 
 
 }
@@ -58,14 +58,16 @@ void ATurret::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	SetupCannon(CannonClass);
+	SetupCannon(TurretCannonClass);
 	
 	PlayerPawn = GetWorld()->GetFirstPlayerController()->GetPawn();
 	FTimerHandle _targetingTimerHandle;
 	GetWorld()->GetTimerManager().SetTimer(_targetingTimerHandle, this, &ATurret::Targeting, TargetingRate, true, TargetingRate);
+	//Запустим таймер для смены орудий
+	 FTimerHandle _targetingChangeCannonHandle;
+	GetWorld()->GetTimerManager().SetTimer(_targetingChangeCannonHandle, this, &ATurret::ChangeCannon, TimeToChangeCannon, true, 20);
+
 }
-
-
 
 /**/
 void ATurret::Destroyed()
@@ -138,9 +140,14 @@ void ATurret::SetupCannon(TSubclassOf<ACannon> newCamnnonClass)
 	if (!newCamnnonClass) {
 		return;
 	}
+	if (Cannon)
+	{
+		Cannon->Destroy();
+	}
+	TurretCannonClass = newCamnnonClass;
 	FActorSpawnParameters params;
 	params.Owner = this;
-	Cannon = GetWorld()->SpawnActor<ACannon>(CannonClass, params);
+	Cannon = GetWorld()->SpawnActor<ACannon>(TurretCannonClass, params);
 	Cannon->AttachToComponent(CannonSetupPoint, FAttachmentTransformRules::SnapToTargetNotIncludingScale);
 }
 
@@ -172,4 +179,18 @@ bool ATurret::IsPlayerSeen()
 
 	DrawDebugLine(GetWorld(), eyesPos, playerPos, FColor::Cyan, false, 0.5f, 0, 10);
 	return false;
+}
+
+/*
+Переставляем местами орудия
+*/
+void ATurret::ChangeCannon()
+{
+	
+	TSubclassOf<ACannon> CachedCannon;
+	CachedCannon = TurretCannonClass;
+	TurretCannonClass = TurretSecondCannonClass;
+	TurretSecondCannonClass = CachedCannon;
+	SetupCannon(TurretCannonClass);
+	UE_LOG(LogTemp, Warning, TEXT("Change Cannon %s"), *TurretCannonClass->GetName());
 }
