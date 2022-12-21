@@ -89,7 +89,6 @@ void ATankPawn::Tick(float DeltaTime)
 	//Вращение танка
 	CurrentRightAxisValue = FMath::Lerp(CurrentRightAxisValue, targetRotateRigthAxisValue, InterpolationKey);
 	//UE_LOG(LogTemp, Warning, TEXT("CurrentRightAxisValue = %f targetRotateRigthAxisValue = % f"), CurrentRightAxisValue, targetRotateRigthAxisValue);
-
 	float yawRotation = RotationSpeed * targetRotateRigthAxisValue * DeltaTime;
 	FRotator currentRotation = GetActorRotation();
 	yawRotation = currentRotation.Yaw + yawRotation;	
@@ -100,11 +99,12 @@ void ATankPawn::Tick(float DeltaTime)
 	if (TankController)
 	{
 		FVector mousePos = TankController->GetMousePos();
-		FRotator targetRotation = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), mousePos);
-		FRotator currRotation = TurretMesh->GetComponentRotation();
-		targetRotation.Pitch = currRotation.Pitch;
-		targetRotation.Roll = currRotation.Roll;
-		TurretMesh->SetWorldRotation(FMath::Lerp(currRotation, targetRotation, TurretRotationInterpolationKey));
+		RotateTurretTo(mousePos);
+		//FRotator targetRotation = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), mousePos);
+		//FRotator currRotation = TurretMesh->GetComponentRotation();
+		//targetRotation.Pitch = currRotation.Pitch;
+		//targetRotation.Roll = currRotation.Roll;
+		//TurretMesh->SetWorldRotation(FMath::Lerp(currRotation, targetRotation, TurretRotationInterpolationKey));
 	}
 }
 
@@ -192,4 +192,23 @@ void ATankPawn::ChangeCannon()
 	SetupCannon(CannonClass);
 	if(canonCnt++ >= 3)
 		canonCnt = 0;
+}
+
+/**/
+FVector ATankPawn::GetTurretForwardVector()
+{
+	return TurretMesh->GetForwardVector();
+}
+
+
+/**/
+void ATankPawn::RotateTurretTo(FVector TargetPosition)
+{
+	FRotator targetRotation =
+		UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), TargetPosition);
+	FRotator currRotation = TurretMesh->GetComponentRotation();
+	targetRotation.Pitch = currRotation.Pitch;
+	targetRotation.Roll = currRotation.Roll;
+	TurretMesh->SetWorldRotation(FMath::Lerp(currRotation, targetRotation,
+		TurretRotationInterpolationKey));
 }

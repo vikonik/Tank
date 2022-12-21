@@ -50,6 +50,18 @@ ACannon* GetCannon() const { return Cannon; }
 UFUNCTION(BlueprintCallable)
 class UHealthComponent* GetHealthComponent() const { return HealthComponent; }
 
+UFUNCTION()
+FVector GetTurretForwardVector();
+UFUNCTION()
+void RotateTurretTo(FVector TargetPosition);
+
+/*******************************AI************************************/
+
+UFUNCTION()
+TArray<FVector> GetPatrollingPoints() { return PatrollingPoints; };
+UFUNCTION()
+float GetMovementAccurency() { return MovementAccurency; };
+/**********************************************************************/
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -106,7 +118,12 @@ protected:
 	/**********************************************************************/
 	UPROPERTY()
 		ACannon* Cannon;
-
+	/*******************************AI************************************/
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI|Move params|Patrol points" , Meta = (MakeEditWidget = true))
+		TArray<FVector> PatrollingPoints;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI|Move	params | Accurency")
+		float MovementAccurency = 50;
+	/*********************************************************************/
 
 	float targetForwardAxisValue = 0.0f;
 	float targetRigthAxisValue = 0.0f;
