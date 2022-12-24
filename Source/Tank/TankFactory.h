@@ -3,7 +3,9 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Pawn.h"
+#include "TankPawn.h"
+#include "Engine/TargetPoint.h"
+#include "GameFramework/Actor.h"
 #include "TankFactory.generated.h"
 
 UCLASS()
@@ -11,19 +13,33 @@ class TANK_API ATankFactory : public APawn
 {
 	GENERATED_BODY()
 
+protected:
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
+		UStaticMeshComponent* BuildingMesh;
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
+		UArrowComponent* TankSpawnPoint;
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
+		UBoxComponent* HitCollider;
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
+		UHealthComponent* HealthComponent;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Spawn tanks params")
+		TSubclassOf<ATankPawn> SpawnTankClass;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Spawn tanks params")
+		float SpawnTankRate = 1;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Spawn tanks params")
+		TArray<ATargetPoint*> TankWayPoints;
 public:
-	// Sets default values for this pawn's properties
+	// Sets default values for this actor's properties
 	ATankFactory();
-
+	UFUNCTION()
+		void TakeDamage(FDamageData DamageData);
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
-
-	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	void SpawnNewTank();
+	UFUNCTION()
+		void Die();
+	UFUNCTION()
+		void DamageTaked(float DamageValue);
 
 };
