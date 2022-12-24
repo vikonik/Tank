@@ -27,6 +27,12 @@ void ATankAIController::BeginPlay()
 void ATankAIController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	if(!TankPawn)
+		Initialize();
+	
+	if (!TankPawn)
+		return;
+
 	TankPawn->MoveForward(1);
 	float rotationValue = GetRotationgValue();
 	TankPawn->RotateRight(rotationValue);
