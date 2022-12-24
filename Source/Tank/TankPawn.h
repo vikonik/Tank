@@ -11,6 +11,7 @@
 #include "HealthComponent.h"
 #include "BasePawn.h"
 #include "Engine/TargetPoint.h"
+#include "MapLoader.h"
 #include "TankPawn.generated.h"
 
 

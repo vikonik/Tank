@@ -18,34 +18,35 @@ ATankFactory::ATankFactory()
 	HitCollider = CreateDefaultSubobject<UBoxComponent>(TEXT("Hit collider"));
 	HitCollider->SetupAttachment(sceneComp);
 	HealthComponent = CreateDefaultSubobject<UHealthComponent>(TEXT("Health component"));
-	HealthComponent->OnDie.AddUObject(this, &ATankFactory::Die);
+	HealthComponent->OnDie.AddUObject(this, &ATankFactory::Die);//подписываемся на акцию разрушения
 	HealthComponent->OnDamaged.AddUObject(this, &ATankFactory::DamageTaked);
 
-	//USceneComponent* sceneComp =
-	//	CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
-	//RootComponent = sceneComp;
-	UE_LOG(LogTemp, Warning, TEXT("ATankFactory "));
+	UE_LOG(LogTemp, Warning, TEXT("ATankFactory is building"));
 }
 
 void ATankFactory::BeginPlay()
 {
 	Super::BeginPlay();
+	if (LinkedMapLoader) {
+		LinkedMapLoader->SetIsActivated(false);
+		UE_LOG(LogTemp, Warning, TEXT("LinkedMapLoader set False"));
+	}
+	else {
+		UE_LOG(LogTemp, Warning, TEXT("LinkedMapLoader is False"));
+	}
+		
 	FTimerHandle _targetingTimerHandle;
-	GetWorld()->GetTimerManager().SetTimer(_targetingTimerHandle, this,
-		&ATankFactory::SpawnNewTank, SpawnTankRate, true, SpawnTankRate);
+	//GetWorld()->GetTimerManager().SetTimer(_targetingTimerHandle, this,	&ATankFactory::SpawnNewTank, SpawnTankRate, true, SpawnTankRate);
 }
 
 void ATankFactory::TakeDamage(FDamageData DamageData)
 {
-	//UE_LOG(LogTemp, Warning, TEXT("Take factory damage %f, health: %f", DamageValue, HealthComponent->GetHealth());
+	//UE_LOG(LogTemp, Warning, TEXT("Take factory damage %f, health: %f"), DamageValue, HealthComponent->GetHealth());
+	UE_LOG(LogTemp, Warning, TEXT("Take factory damage"));
 
 	HealthComponent->TakeDamage(DamageData);
 }
 
-void ATankFactory::Die()
-{
-	Destroy();
-}
 
 void ATankFactory::DamageTaked(float DamageValue)
 {
@@ -63,5 +64,13 @@ void ATankFactory::SpawnNewTank()
 	newTank->SetPatrollingPoints(TankWayPoints);
 	//
 	UGameplayStatics::FinishSpawningActor(newTank, spawnTransform);
+}
+
+/**/
+void ATankFactory::Die()
+{
+	if (LinkedMapLoader)
+		LinkedMapLoader->SetIsActivated(true);
+	Destroy();
 }
 

@@ -6,7 +6,10 @@
 #include "TankPawn.h"
 #include "Engine/TargetPoint.h"
 #include "GameFramework/Actor.h"
+//#include "DamageTaker.h"
 #include "TankFactory.generated.h"
+
+class AMapLoader;
 
 UCLASS()
 class TANK_API ATankFactory : public APawn
@@ -28,6 +31,10 @@ protected:
 		float SpawnTankRate = 1;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Spawn tanks params")
 		TArray<ATargetPoint*> TankWayPoints;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Spawn tanks params")
+		AMapLoader* LinkedMapLoader;
+
+
 public:
 	// Sets default values for this actor's properties
 	ATankFactory();
