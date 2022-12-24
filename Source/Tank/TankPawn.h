@@ -10,6 +10,7 @@
 #include "DamageTaker.h"
 #include "HealthComponent.h"
 #include "BasePawn.h"
+#include "Engine/TargetPoint.h"
 #include "TankPawn.generated.h"
 
 
@@ -57,8 +58,8 @@ void RotateTurretTo(FVector TargetPosition);
 
 /*******************************AI************************************/
 
-UFUNCTION()
-TArray<FVector> GetPatrollingPoints() { return PatrollingPoints; };
+//UFUNCTION()
+//TArray<FVector> GetPatrollingPoints() { return PatrollingPoints; };
 UFUNCTION()
 float GetMovementAccurency() { return MovementAccurency; };
 FVector GetEyesPosition();//Глаза для AI
@@ -120,10 +121,14 @@ protected:
 	UPROPERTY()
 		ACannon* Cannon;
 	/*******************************AI************************************/
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI|Move params|Patrol points" , Meta = (MakeEditWidget = true))
-		TArray<FVector> PatrollingPoints;
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI|Move params|Patrol points" , Meta = (MakeEditWidget = true))
+	//	TArray<FVector> PatrollingPoints;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI|Move	params | Accurency")
 		float MovementAccurency = 50;
+	/*********************************************************************/
+	/********************************Factory*************************************/
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI|Move params|Patrol points" , Meta = (MakeEditWidget = true))
+		TArray<ATargetPoint*> PatrollingPoints;
 	/*********************************************************************/
 
 	float targetForwardAxisValue = 0.0f;
@@ -147,6 +152,7 @@ public:
 	// Called every frame
 //	virtual void Tick(float DeltaTime) override;
 
-
+	TArray<FVector> GetPatrollingPoints();
+	void SetPatrollingPoints(TArray<ATargetPoint*> NewPatrollingPoints);
 
 };
