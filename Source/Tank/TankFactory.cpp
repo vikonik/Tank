@@ -24,6 +24,7 @@ ATankFactory::ATankFactory()
 	//USceneComponent* sceneComp =
 	//	CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
 	//RootComponent = sceneComp;
+	UE_LOG(LogTemp, Warning, TEXT("ATankFactory "));
 }
 
 void ATankFactory::BeginPlay()
