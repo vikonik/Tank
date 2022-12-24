@@ -44,5 +44,7 @@ protected:
 	void Fire();
 	bool IsPlayerSeen();
 	
+
+	void Initialize();
 };
 
