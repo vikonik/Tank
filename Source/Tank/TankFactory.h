@@ -12,7 +12,7 @@
 class AMapLoader;
 
 UCLASS()
-class TANK_API ATankFactory : public APawn
+class TANK_API ATankFactory : public APawn, public IDamageTaker
 {
 	GENERATED_BODY()
 

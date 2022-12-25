@@ -1,3 +1,10 @@
+/*
+Чтобы уничтожение фвбрики работало правильнльно нужно унаследлваться от IDamageTaker. 
+Иначе программа не попадает в ветку уничтожения фабрики, а уничтожект ее как объект и снаряд в 
+функции void AProjectile::OnMeshOverlapBegin(...) (В методичке этого нет)
+
+*/
+
 #include "TankFactory.h"
 
 #include "TimerManager.h"
@@ -17,6 +24,7 @@ ATankFactory::ATankFactory()
 	TankSpawnPoint->AttachToComponent(sceneComp, FAttachmentTransformRules::KeepRelativeTransform);
 	HitCollider = CreateDefaultSubobject<UBoxComponent>(TEXT("Hit collider"));
 	HitCollider->SetupAttachment(sceneComp);
+
 	HealthComponent = CreateDefaultSubobject<UHealthComponent>(TEXT("Health component"));
 	HealthComponent->OnDie.AddUObject(this, &ATankFactory::Die);//подписываемся на акцию разрушения
 	HealthComponent->OnDamaged.AddUObject(this, &ATankFactory::DamageTaked);
@@ -45,6 +53,8 @@ void ATankFactory::TakeDamage(FDamageData DamageData)
 	UE_LOG(LogTemp, Warning, TEXT("Take factory damage"));
 
 	HealthComponent->TakeDamage(DamageData);
+
+
 }
 
 
@@ -71,6 +81,12 @@ void ATankFactory::Die()
 {
 	if (LinkedMapLoader)
 		LinkedMapLoader->SetIsActivated(true);
-	Destroy();
+	//Destroy();
+	/*Меняем отоброжающийся меш*/
+	const FString BodyMeshPath = "StaticMesh'/Game/CSC/Meshes/SM_CSC_Tower1.SM_CSC_Tower1'";
+	UStaticMesh* bodyMeshTemp = LoadObject<UStaticMesh>(this, *BodyMeshPath);
+	if (bodyMeshTemp)
+		BuildingMesh->SetStaticMesh(bodyMeshTemp);
+
 }
 
