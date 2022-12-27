@@ -14,7 +14,7 @@ class TANK_API AProjectile : public AActor
 public:
 	// Sets default values for this actor's properties
 	AProjectile();
-	void Start();
+	virtual void Start();
 	//virtual void BeginPlay() override;
 	FTimerHandle MoveTimer;
 	//	FTimerHandle DeactivateTimer;
@@ -31,7 +31,7 @@ public:
 
 protected:
 	UFUNCTION()
-		void Move();
+		virtual void Move();
 
 	UFUNCTION()
 		void OnMeshOverlapBegin(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor,
