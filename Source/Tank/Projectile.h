@@ -49,6 +49,9 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Damage")
 		float Damage = 1.0f;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Damage")
+		float PushForce = 1000;
+
 	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Component")
 	//	class USphereComponent* SphereCollision;
 
