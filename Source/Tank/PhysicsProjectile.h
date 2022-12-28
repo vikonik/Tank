@@ -36,4 +36,5 @@ public:
 	virtual void Start() override;
 protected:
 	virtual void Move() override;
+	void Explode();
 };

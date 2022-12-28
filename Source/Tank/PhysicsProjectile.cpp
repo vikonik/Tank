@@ -1,14 +1,26 @@
-#include "PhysicsProjectile.h"
-
-#include "DrawDebugHelpers.h"
-#include "PhysicsComponent.h"
+//#include "PhysicsProjectile.h"
+//
+//#include "DrawDebugHelpers.h"
+//#include "PhysicsComponent.h"
 #include "Kismet/KismetMathLibrary.h"
+
+#include "PhysicsProjectile.h"
+#include "PhysicsComponent.h"
+#include <Particles/ParticleSystemComponent.h>
+#include <DrawDebugHelpers.h>
+#include <Kismet/KismetMathLibrary.h>
+#include "DamageTaker.h"
+
+
+#include "CollisionShape.h"
+
+
 APhysicsProjectile::APhysicsProjectile()
 {
 	PhysicsComponent = CreateDefaultSubobject<UPhysicsComponent>(TEXT("PhysicsComponent"));
 	TrailEffect = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("Trail effect"));
-		TrailEffect->SetupAttachment(RootComponent);
-} 
+	TrailEffect->SetupAttachment(RootComponent);
+}
 
 void APhysicsProjectile::Start()
 {
@@ -19,31 +31,111 @@ void APhysicsProjectile::Start()
 	{
 		for (FVector position : CurrentTrajectory)
 		{
-			DrawDebugSphere(GetWorld(), position, 5, 8, FColor::Purple, true, 1, 0,	2);
+			DrawDebugSphere(GetWorld(), position, 5, 8, FColor::Purple, true, 1, 0, 2);
 		}
-	} 
+	}
 	TragectoryPointIndex = 0;
 	Super::Start();
-} 
+}
+
+//void APhysicsProjectile::Move()
+//{
+//	FVector currentMoveVector = CurrentTrajectory[TragectoryPointIndex] - GetActorLocation();
+//	currentMoveVector.Normalize();
+//	FVector newLocation = GetActorLocation() + currentMoveVector * MoveSpeed * MoveRate;
+//	SetActorLocation(newLocation);
+//	if (FVector::Distance(newLocation, CurrentTrajectory[TragectoryPointIndex]) <= MoveAccurency)
+//	{
+//		TragectoryPointIndex++;
+//		if (TragectoryPointIndex >= CurrentTrajectory.Num())
+//			Destroy();
+//		else
+//		{
+//			FRotator newRotation = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(),
+//				CurrentTrajectory[TragectoryPointIndex]);
+//			SetActorRotation(newRotation);
+//		}
+//
+//	}
+//}
 
 void APhysicsProjectile::Move()
 {
-	FVector currentMoveVector = CurrentTrajectory[TragectoryPointIndex] -
-		GetActorLocation();
+	FVector currentMoveVector = CurrentTrajectory[TragectoryPointIndex] - GetActorLocation();
 	currentMoveVector.Normalize();
-	FVector newLocation = GetActorLocation() + currentMoveVector * MoveSpeed *	MoveRate;
+	FVector newLocation = GetActorLocation() + currentMoveVector * MoveSpeed * MoveRate;
 	SetActorLocation(newLocation);
 	if (FVector::Distance(newLocation, CurrentTrajectory[TragectoryPointIndex]) <= MoveAccurency)
 	{
 		TragectoryPointIndex++;
 		if (TragectoryPointIndex >= CurrentTrajectory.Num())
+		{
+			Explode();
 			Destroy();
+		}
 		else
 		{
-			FRotator newRotation =	UKismetMathLibrary::FindLookAtRotation(GetActorLocation(),
-					CurrentTrajectory[TragectoryPointIndex]);
+			FRotator newRotation = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(),
+				CurrentTrajectory[TragectoryPointIndex]);
 			SetActorRotation(newRotation);
 		}
-
 	}
+}
+
+
+
+/*Это не работает, сплошная ошибка...*/
+void APhysicsProjectile::Explode()
+{
+	FVector startPos = GetActorLocation();
+	FVector endPos = startPos + FVector(0.1f);
+	FCollisionShape Shape = FCollisionShape::MakeSphere(ExplodeRadius);
+	//FCollisionQueryParams params = FCollisionQueryParams::DefaultQueryParam;
+	//params.AddIgnoredActor(this);
+	//params.bTraceComplex = true;
+	//params.TraceTag = "Explode Trace";
+	//TArray<FHitResult> AttackHit;
+	//FQuat Rotation = FQuat::Identity;
+	//bool sweepResult = GetWorld()->SweepMultiByChannel
+	//(
+	//	AttackHit,
+	//	startPos,
+	//	endPos,
+	//	Rotation,
+	//	ECollisionChannel::ECC_Visibility,
+	//	Shape,
+	//	params
+	//);
+	//GetWorld()->DebugDrawTraceTag = "Explode Trace";
+	//if (sweepResult)
+	//{
+	//	for (FHitResult hitResult : AttackHit)
+	//	{
+	//		AActor* otherActor = hitResult.GetActor();
+	//		if (!otherActor)
+	//			continue;
+	//		IDamageTaker* damageTakerActor = Cast<IDamageTaker>(otherActor);
+	//		if (damageTakerActor)
+	//		{
+	//			FDamageData damageData;
+	//			damageData.DamageValue = Damage;
+	//			damageData.Instigator = GetOwner();
+	//			damageData.DamageMaker = this;
+	//			damageTakerActor->TakeDamage(damageData);
+	//		}
+	//		else
+	//		{
+	//			UPrimitiveComponent* mesh = Cast<UPrimitiveComponent>(otherActor->GetRootComponent());
+	//			if (mesh)
+	//			{
+	//				if (mesh->IsSimulatingPhysics())
+	//				{
+	//					FVector forceVector = otherActor->GetActorLocation() - GetActorLocation();
+	//					forceVector.Normalize();
+	//					mesh->AddImpulse(forceVector * PushForce, NAME_None, true);
+	//				}
+	//			}
+	//		}
+	//	}
+	//}
 }
